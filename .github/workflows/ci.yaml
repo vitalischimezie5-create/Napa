@@ -1,0 +1,32 @@
+# This is the event that will triger the workflow
+on:
+   push:
+       branches: [master]
+# This is the job that the bot will run
+jobs:
+    say-hello:
+        runs-on: ubuntu-latest
+        steps:
+            - name: say say-hello
+              run: echo "Hellofrom Github Actions!"
+            - name: Look at the folder before checkout
+              run: ls -la
+
+            - name: Get the code
+              uses: actions/checkout@v5
+            - name: Look at the folder after checkout
+              run: ls -la
+
+            - name: Get the facts about this run 
+              run: |
+                 echo "Repositry: ${{ github.repositry }}"
+                 echo "Branch: ${{ github.ref_name }}" 
+                 echo "commit: ${{ github.sha }}"
+                 echo "started by: ${{ github.actor }}"
+
+            - name: Get facts about the machine
+              run: |    
+                  uname -a 
+                  python3 --version
+                  pip3 --version
+                  docker --version         
