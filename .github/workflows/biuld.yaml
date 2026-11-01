@@ -1,0 +1,37 @@
+
+name: "Build Workflow"
+
+on:
+  workflow_run:
+    workflows: ["test"]
+    types: ["completed"]
+    branches: ["master"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Say hello
+        run: echo "Hello from the build workflow!"
+
+      - name: Access GitHub Secret
+        env:
+          MY_SECRET: ${{ secrets.MY_SECRET }}
+        run: |
+          if [ -n "$MY_SECRET" ]; then
+            echo "Secret is configured successfully!"
+          else
+            echo "Secret is missing!"
+            exit 1
+          fi
+
+      - name: Step Summary
+        run: |
+          echo "# Build Workflow Summary" >> $GITHUB_STEP_SUMMARY
+          echo "The test workflow has completed." >> $GITHUB_STEP_SUMMARY
+          echo "Build workflow executed successfully." >> $GITHUB_STEP_SUMMARY
+          echo "GitHub Secret was checked." >> $GITHUB_STEP_SUMMARY
