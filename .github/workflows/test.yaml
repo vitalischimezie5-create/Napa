@@ -1,0 +1,23 @@
+name: "test"
+on:
+  workflow_run:
+    workflows: ["Hello Actions"]
+    types: ["completed"]
+    branches: ["master"]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Say hello
+        run: echo "Hello from the test workflow!"
+
+      - name: Step Summary
+        run: |
+          echo "# Test Workflow Summary" >> $GITHUB_STEP_SUMMARY
+          echo " The Hello Actions workflow has completed." >> $GITHUB_STEP_SUMMARY
+          echo "Test workflow executed successfully." >> $GITHUB_STEP_SUMMARY    
